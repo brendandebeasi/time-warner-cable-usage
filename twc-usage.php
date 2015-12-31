@@ -122,13 +122,13 @@ foreach($modems as &$modem) {
 	curl_setopt($ch, CURLOPT_REFERER, 'https://myservices.timewarnercable.com/myservices/internet/index');
 	curl_setopt($ch, CURLOPT_POST, false);
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-	$usage = curl_exec($ch);
+	$usage = json_decode(curl_exec($ch),true);
 	$modem['usage'] = $usage['result']['usage'];
 }
 
 
-if(empty($config['out'])) echo $usage;
-else file_put_contents($config['out'], $usage);
+if(empty($config['out'])) echo json_encode($modems);
+else file_put_contents($config['out'], json_encode($modems));
 
 unlink('/tmp/twcauth.txt');
 curl_close($ch);
